@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Todo App</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 </head>
 <body>
-    <h1>Task List</h1>
-    <form method="POST" action="/">
-        <input type="text" name="content" id="content">
-        <input type="submit" value="Add Task">
-    </form>
-    <ul>
-        {% for task in tasks %}
-            <li>
-                <form action="/toggle/{{task.id }}" method="post">
-                    <input type="checkbox" name="task" id="task-{{ task.id }}" {{ 'checked' if task.completed else '' }} onchange="this.form.submit()">
-                    <label for="task-{{ task.id }}">{{ task.content }}</label>
-                    <a href="/delete/{{ task.id }}" style="padding-left: 50px;">X</a>
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
+    <div style="margin-top: 25px;" class="ui container">
+        <h1 class="ui center aligned header">Task List</h1>
+        <form class="ui form" method="POST" action="/">
+            <input type="text" name="content" id="content">
+            <button class="ui blue button" type="submit">Add Task</button>
+        </form>
+        <ul style="list-style-type: none;">
+            {% for task in tasks %}
+            <div class="ui segment">
+                <li>
+                    <form action="/toggle/{{task.id }}" method="post">
+                        {% if task.completed == False %}
+                        <span class="ui gray label">Not Complete</span>
+                        {% else %}
+                        <span class="ui green label">Completed</span>
+                        {% endif %}
+
+                        <input type="checkbox" name="task" id="task-{{ task.id }}" {{ 'checked' if task.completed else '' }} onchange="this.form.submit()" style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="task-{{ task.id }}" class="ui black text aligned center">{{ task.content }}</label>
+                        <a class="ui red button" href="/delete/{{ task.id }}" style="float: right;">X</a>
+                    </form>
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
